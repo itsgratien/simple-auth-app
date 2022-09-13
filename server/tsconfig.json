@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"]
+    },
+    "outDir": "dist",
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    /* Type Checking */
+    "strict": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "exclude": ["node_modules"]
+}

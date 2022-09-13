@@ -1,0 +1,8 @@
+{
+  "app": {
+    "database": {
+      "uri": "UPG_DATABASE_URI",
+      "testUri": "UPG_TEST_DATABASE_URI"
+    }
+  }
+}
