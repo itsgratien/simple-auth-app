@@ -30,7 +30,7 @@ export class UserController extends UserRepository {
       return responseWrapper({
         res,
         message: 'Loggedin successfully',
-        status: httpCode.OK
+        status: httpCode.OK,
       });
     } catch (error) {
       return next(error);
