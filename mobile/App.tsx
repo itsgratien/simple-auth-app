@@ -11,7 +11,7 @@ import {
 import { useFormik } from "formik";
 import axios from "axios";
 
-const request = axios.create({ withCredentials: true });
+export const request = axios.create({ withCredentials: true });
 
 const baseUrl = "https://f4b3-105-178-33-217.eu.ngrok.io/api/v1";
 export default function App() {
@@ -30,6 +30,12 @@ export default function App() {
       console.log("errorh", error);
     }
   };
+
+  const onLogoutFunc = async ()=> {
+    setAllow(false);
+   const res = await request.post(`${baseUrl}/users/logout`);
+   console.log('res', res.data);
+  }
   const formik = useFormik({
     initialValues: { username: "", password: "" },
     onSubmit: (values) => onSubmitFunc(values),
@@ -37,11 +43,15 @@ export default function App() {
 
   React.useEffect(() => {
     const find = async () => {
-      const res = await request.get(`${baseUrl}/users/me`);
+      try {
+        const res = await request.get(`${baseUrl}/users/me`);
       setUser(res.data.data);
+      } catch (error) {
+        
+      }
     };
     find();
-  }, []);
+  }, [allow]);
 
   const { values, handleChange, handleSubmit } = formik;
   return (
@@ -65,6 +75,10 @@ export default function App() {
           <Text style={{ fontWeight: "bold", fontSize: 30 }}>
             Welcome {user.username}
           </Text>
+          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+            Email {user.email}
+          </Text>
+          <Button title="Logout" onPress={onLogoutFunc} color="red" />
         </View>
       )}
       <StatusBar style="auto" />
