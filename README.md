@@ -17,5 +17,22 @@ Authenticate user using web, mobile app and enable communication between backend
 - Typescript
 - Redis
 
+### Available On:
+
+#### Github
+```
+https://github.com/itsgratien
+```
+
+#### Website
+```
+https://gratien.vercel.app
+```
+
+#### Twitter
+```
+https://twitter.com/itsgratien
+```
+
 ### Author
 [gratien](http://github.com/itsgratien)
