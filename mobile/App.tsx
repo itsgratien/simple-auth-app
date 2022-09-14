@@ -47,7 +47,7 @@ export default function App() {
         const res = await request.get(`${baseUrl}/users/me`);
       setUser(res.data.data);
       } catch (error) {
-        
+        console.log(error)
       }
     };
     find();
