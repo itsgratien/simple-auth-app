@@ -5,7 +5,6 @@ import httpCode from '../../../../constants/httpCode';
 import { users } from '../../../../constants/user';
 
 export class UserController extends UserRepository {
-
   login = (req: Request, res: Response, next: NextFunction) => {
     try {
       const find = users.find((item) => item.username === req.body.username);
@@ -38,29 +37,51 @@ export class UserController extends UserRepository {
     }
   };
 
-  getUser = (req: Request, res: Response, next: NextFunction)=> {
-      try {
-        if((req.session as any).userId){
-           const find = users.find((item)=> item._id === (req.session as any).userId);
-           if(find){
-            return responseWrapper({res, data: find, status: httpCode.OK})
-           }
+  getUserByField = (field: 'secretKey' | '_id', value: string) => {
+    const find = users.find((item) => item[field] === value);
+    return find;
+  };
+
+  getUser = (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if ((req.session as any).userId) {
+        const find = this.getUserByField('_id', (req.session as any).userId);
+        if (find) {
+          return responseWrapper({ res, data: find, status: httpCode.OK });
         }
-
-        return responseWrapper({res, status: httpCode.UNAUTHORIZED, message: 'You are not authorized'})
-       
-      } catch (error) {
-        next(error);
       }
-  }
 
-  logout = (req: Request, res: Response, next: NextFunction)=> {
-  try {
-    (req.session as any).destroy();
-    
-    return responseWrapper({res, status: httpCode.OK, message: 'Logged Out'})
-  } catch (error) {
-    next(error);
-  }
-  }
+      if (req.headers && req.headers.authorization) {
+        const find = this.getUserByField(
+          'secretKey',
+          req.headers.authorization as string
+        );
+        if (find) {
+          return responseWrapper({ res, data: find, status: httpCode.OK });
+        }
+      }
+
+      return responseWrapper({
+        res,
+        status: httpCode.UNAUTHORIZED,
+        message: 'You are not authorized'
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  logout = (req: Request, res: Response, next: NextFunction) => {
+    try {
+      (req.session as any).destroy();
+
+      return responseWrapper({
+        res,
+        status: httpCode.OK,
+        message: 'Logged Out'
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
